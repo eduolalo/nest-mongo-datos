@@ -3,11 +3,19 @@ declare const _default: (() => {
         name: string;
         port: string;
     };
+    mongo: {
+        url: string;
+        name: string;
+    };
     apiKey: string;
 }) & import("@nestjs/config").ConfigFactoryKeyHost<{
     database: {
         name: string;
         port: string;
+    };
+    mongo: {
+        url: string;
+        name: string;
     };
     apiKey: string;
 }>;

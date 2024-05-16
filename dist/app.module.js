@@ -7,14 +7,15 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppModule = void 0;
+const mongoose_1 = require("@nestjs/mongoose");
 const config_1 = require("@nestjs/config");
 const common_1 = require("@nestjs/common");
 const database_module_1 = require("./database/database.module");
-const app_controller_1 = require("./app.controller");
+const schema_validator_1 = require("./schema.validator");
 const users_module_1 = require("./users/users.module");
+const app_controller_1 = require("./app.controller");
 const environments_1 = require("./environments");
 const app_service_1 = require("./app.service");
-const schema_validator_1 = require("./schema.validator");
 const config_2 = require("./config");
 let AppModule = class AppModule {
 };
@@ -28,11 +29,18 @@ exports.AppModule = AppModule = __decorate([
                 isGlobal: true,
                 validationSchema: schema_validator_1.SchemaValidator,
             }),
+            mongoose_1.MongooseModule.forRootAsync({
+                useFactory: (configService) => {
+                    const { url, name } = configService.mongo;
+                    return { uri: url, dbName: name };
+                },
+                inject: [config_2.default.KEY],
+            }),
             users_module_1.UsersModule,
             database_module_1.DatabaseModule,
         ],
         controllers: [app_controller_1.AppController],
-        providers: [app_service_1.AppService],
+        providers: [app_service_1.AppService, database_module_1.DatabaseModule],
     })
 ], AppModule);
 //# sourceMappingURL=app.module.js.map

@@ -2,8 +2,11 @@ import * as Joi from "joi";
 
 export const SchemaValidator = Joi.object({
   PORT: Joi.string().required(),
-  MONGO_URL: Joi.string().uri().required(),
   MONGO_DB_NAME: Joi.string().required(),
+  MONGO_PASSWORD: Joi.string().required(),
+  MONGO_USERNAME: Joi.string().required(),
+  MONGO_PORT: Joi.string().required(),
+  MONGO_URL: Joi.string().required(),
 });
 
 // DATA_BASE_NAME=your_database_name

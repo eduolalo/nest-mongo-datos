@@ -9,6 +9,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.DatabaseModule = void 0;
 const common_1 = require("@nestjs/common");
 const mongodb_1 = require("mongodb");
+const config_1 = require("../config");
 const API_KEY = "12345634";
 const API_KEY_PROD = "PROD1212121SA";
 let DatabaseModule = class DatabaseModule {
@@ -17,6 +18,7 @@ exports.DatabaseModule = DatabaseModule;
 exports.DatabaseModule = DatabaseModule = __decorate([
     (0, common_1.Global)(),
     (0, common_1.Module)({
+        imports: [],
         providers: [
             {
                 provide: "API_KEY",
@@ -24,11 +26,13 @@ exports.DatabaseModule = DatabaseModule = __decorate([
             },
             {
                 provide: "MONGO",
-                useFactory: async () => {
-                    const client = new mongodb_1.MongoClient(process.env.MONGO_URL);
+                useFactory: async (configService) => {
+                    const { url, name } = configService.mongo;
+                    const client = new mongodb_1.MongoClient(url);
                     await client.connect();
-                    return client.db(process.env.MONGO_DB_NAME);
+                    return client.db();
                 },
+                inject: [config_1.default.KEY],
             },
         ],
         exports: ["API_KEY", "MONGO"],
